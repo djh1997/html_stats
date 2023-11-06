@@ -64,7 +64,7 @@ pcent=$((($used*100)/$size))
 seedusedpcent=$((($seed*100)/$used))
 seedsizepcent=$((($seed*100)/$size))
 
-cat htmlstart.txt > $OF
+cat '<!DOCTYPE html><html><head>  <meta http-equiv="refresh" content="60"></head><body>' > $OF
 echo $tempc'<meter value="'$temp'" min="25000" low="34000" optimum="25001" high="37000" max="45000"></meter><br>' >> $OF
 echo $fanrpm' fan rpm<meter value="'$fanpwm'" low="550" optimum="'$minpwm'" high="750" max="'$maxpwm'"></meter><br>' >> $OF
 echo $usedsd'GB used on sd card '$pcentsd'% full<meter value="'$pcentsd'" low="60" optimum="0" high="80" max="100"></meter><br>' >> $OF
