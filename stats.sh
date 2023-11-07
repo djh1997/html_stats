@@ -79,7 +79,6 @@ echo '<svg height="200" width="200" viewBox="0 0 40 40"><circle class="donut-hol
   x="10" y="25">EXT</text></svg>' >> $OF
 
 echo '<br><font color="blue">free</font><font color="red">seed</font><font color="green">used</font><br>' >> $OF
-echo '<a href="mong.html" target="_blank">' >> $OF
 #make the graph background 
 echo '<svg height="330" width="'$temparrlength'"><defs>
     <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -127,4 +126,4 @@ echo '"style="fill:none;stroke:purple;stroke-width:1" />  <text fill="blue" font
   x="10" y="20">temp 22-55c</text>
   <text fill="purple" font-size="12" font-family="Verdana"
   x="10" y="30">cpu load 0-100%</text>
-</svg></a><br></body></html>' >> $OF
+</svg><br></body></html>' >> $OF
