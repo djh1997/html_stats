@@ -1,4 +1,4 @@
-# html_stats
+# html stats page using svg elements 
 bash script to make a html webpage using svg element[^2] to show progress bars[^1], pie chart[^3] and line graph[^4] from log files[^5][^6]
 ![graphs web page](examplepage.jpeg)
 will make a script to convert gps to svg image of track
