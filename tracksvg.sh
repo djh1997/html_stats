@@ -15,17 +15,7 @@ cat '<!DOCTYPE html><html><head>  <meta http-equiv="refresh" content="60"></head
 
 
 #make the graph background 
-echo '<svg height="330" width="300"><defs>
-    <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"
-      style="stop-color:rgb(255,80,80)" />
-      <stop offset="50%"
-      style="stop-color:rgb(255,255,80)" />
-      <stop offset="100%"
-      style="stop-color:rgb(80,255,80)" />
-    </linearGradient>
-  </defs>
-  <rect width="'$temparrlength'" height="330" fill="url(#grad1)" /><path d="' >> $OF
+echo '<svg height="330" width="300"><path d="' >> $OF
 #make vertical time axis
 for (( i=60; i<1400; i+=60 )); do
  echo 'M'$i' 0L'$i' 360' >> $OF ;
