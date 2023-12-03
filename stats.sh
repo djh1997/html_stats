@@ -4,14 +4,13 @@
 #get first of 3 temps for average
 temp1=$(cat /sys/class/thermal/thermal_zone0/temp)
 #set out put file
-OF=/var/www/html/mon.html
+OF=stats.html
 minpwm=200
 maxpwm=1023
 OC=0
 #get the uptime of the server
 uptime=$(uptime)
 #get temp in deg c
-tempc=$(vcgencmd measure_temp)
 #get load average tail gets the last 11 characters head gets the first 4
 load=$(uptime | tail -c 11 | head -c 4)
 loadnum=$((${load:0:1}*100+${load:2:1}*10+${load:3:1}))
@@ -21,9 +20,9 @@ temp2=$(cat /sys/class/thermal/thermal_zone0/temp)
 #cap load at 400% (4 core cpu)
 if(($loadnum >= 400)); then loadnum=399; fi
 #append load value to log file
-echo $((($loadnum*33)/40)) >> /home/pi/loadlist.txt
+echo $((($loadnum*33)/40)) >> loadlist.txt
 #get last 1440 values from log file
-loadlist=$(tail -1440 /home/pi/loadlist.txt)
+loadlist=$(tail -1440 loadlist.txt)
 #put values into array
 loadarr=( $loadlist )
 #make variable number that matches lenght of array to make iteration over array easier 
@@ -43,13 +42,13 @@ fi
 
 fanrpm=$(($fanpwm*5))
  
-echo $(($temp/100)) >> /home/pi/templist.txt
-templist=$(tail -1440 /home/pi/templist.txt)
+echo $(($temp/100)) >> templist.txt
+templist=$(tail -1440 templist.txt)
 temparr=( $templist )
 temparrlength=(${#temparr[@]})
 
-echo $(($fanpwm/3)) >> /home/pi/fanlist.txt
-fanlist=$(tail -1440 /home/pi/fanlist.txt)
+echo $(($fanpwm/3)) >> fanlist.txt
+fanlist=$(tail -1440 fanlist.txt)
 fanarr=( $fanlist )
 fanarrlength=(${#fanarr[@]})
 
@@ -57,14 +56,14 @@ fanarrlength=(${#fanarr[@]})
 sizesd=$(df -h / --output=size | egrep -o  '.[0-9]+')
 usedsd=$(df -h / --output=used | egrep -o  '.[0-9]+')
 pcentsd=$(df / --output=pcent | egrep -o  '[0-9]+')
-size=$(df --block-size=1GB 14tb/ --output=size | egrep -o  '.[0-9]+')
-used=$(df --block-size=1GB 14tb/ --output=used | egrep -o  '[0-9]+')
-seed=$(du -s --block-size=1GB 14tb/seed | head -c 4)
-pcent=$((($used*100)/$size))
-seedusedpcent=$((($seed*100)/$used))
-seedsizepcent=$((($seed*100)/$size))
+#size=$(df --block-size=1GB 14tb/ --output=size | egrep -o  '.[0-9]+')
+#used=$(df --block-size=1GB 14tb/ --output=used | egrep -o  '[0-9]+')
+#seed=$(du -s --block-size=1GB 14tb/seed | head -c 4)
+#pcent=$((($used*100)/$size))
+#seedusedpcent=$((($seed*100)/$used))
+#seedsizepcent=$((($seed*100)/$size))
 
-cat '<!DOCTYPE html><html><head>  <meta http-equiv="refresh" content="60"></head><body>' > $OF
+echo '<!DOCTYPE html><html><head>  <meta http-equiv="refresh" content="60"></head><body>' > $OF
 echo $tempc'<meter value="'$temp'" min="25000" low="34000" optimum="25001" high="37000" max="45000"></meter><br>' >> $OF
 echo $fanrpm' fan rpm<meter value="'$fanpwm'" low="550" optimum="'$minpwm'" high="750" max="'$maxpwm'"></meter><br>' >> $OF
 echo $usedsd'GB used on sd card '$pcentsd'% full<meter value="'$pcentsd'" low="60" optimum="0" high="80" max="100"></meter><br>' >> $OF
@@ -74,9 +73,6 @@ echo $uptime'<meter value="'$load'"low="2"optimum="1"high="3" max="4"></meter><b
 #make 2 part pi chart
 echo '<svg height="200" width="200" viewBox="0 0 40 40"><circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle><circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="blue" stroke-width="3"></circle><circle r="15.91549430918954" cx="21" cy="21" fill="transparent" stroke="green" stroke-width="3" stroke-dasharray="'$pcentsd' '$((100-$pcentsd))'"/><text fill="black" font-size="12" font-family="Verdana"
    x="12" y="25">SD</text></svg>' >> $OF
-#make 3 part pi chart
-echo '<svg height="200" width="200" viewBox="0 0 40 40"><circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle><circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="blue" stroke-width="3"></circle><circle r="15.91549430918954" cx="21" cy="21" fill="transparent" stroke="green" stroke-width="3" stroke-dasharray="'$pcent' '$((100-$pcent))'"/><circle r="15.91549430918954" cx="21" cy="21" fill="transparent" stroke="red" stroke-width="3" stroke-dasharray="'$seedsizepcent' '$((100-$seedsizepcent))'"/><text fill="black" font-size="12" font-family="Verdana"
-  x="10" y="25">EXT</text></svg>' >> $OF
 
 echo '<br><font color="blue">free</font><font color="red">seed</font><font color="green">used</font><br>' >> $OF
 #make the graph background 
@@ -109,12 +105,6 @@ for (( i=0; i<$fanarrlength; i++ )); do
 done
 
 echo '"style="fill:none;stroke:blue;stroke-width:1" /><polyline points="' >> $OF
-
-for (( i=0; i<$powerarrlength; i++ )); do
- echo "$i,$((330-${powerarr[$i]})) ">> $OF ;
-done
-
-echo '"style="fill:none;stroke:green;stroke-width:1" /><polyline points="' >> $OF
 
 for (( i=0; i<$loadarrlength; i++ )); do
  echo "$i,$((330-${loadarr[$i]})) ">> $OF ;
