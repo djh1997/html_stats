@@ -71,7 +71,7 @@ echo $used'GB used '$pcent'% full<meter value="'$pcent'" low="60" optimum="0" hi
 echo $seed'GB used to seed linux isos '$seedusedpcent'% of used '$seedsizepcent'% of disk<meter value="'$seed'" max="'$used'"></meter><br>' >> $OF
 echo $uptime'<meter value="'$load'"low="2"optimum="1"high="3" max="4"></meter><br>' >> $OF
 #make 2 part pi chart
-echo '<svg height="200" width="200" viewBox="0 0 40 40"><circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle><circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="blue" stroke-width="3"></circle><circle r="15.91549430918954" cx="21" cy="21" fill="transparent" stroke="green" stroke-width="3" stroke-dasharray="'$pcentsd' '$((100-$pcentsd))'"/><text fill="black" font-size="12" font-family="Verdana"
+echo '<svg height="200" width="200" viewBox="0 0 40 40"><circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff" transform="rotate(90, 21, 21)"></circle><circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="blue" stroke-width="3"/><circle r="15.91549430918954" cx="21" cy="21" fill="transparent" stroke="green" transform="rotate(90, 21, 21)" stroke-width="3" stroke-dasharray="'$pcentsd' '$((100-$pcentsd))'"/><text fill="black" font-size="12" font-family="Verdana"
    x="12" y="25">SD</text></svg>' >> $OF
 
 echo '<br><font color="blue">free</font><font color="red">seed</font><font color="green">used</font><br>' >> $OF
