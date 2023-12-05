@@ -9,7 +9,7 @@ gpsarr=( $gpslist )
 #make variable number that matches lenght of array to make iteration over array easier
 gpsarrlength=(${#gpsarr[@]})
 
-echo '<!DOCTYPE html><html><head>  <meta http-equiv="refresh" content="60"></head><body>' > $OF
+echo '<!DOCTYPE html><html><body>' > $OF
 
 #make the graph background
 echo '<svg viewBox="-100 -100 100 100" height="330" width="300"><polyline points="' >> $OF
