@@ -16,8 +16,8 @@ echo '<svg viewBox="-100 -100 100 100" height="330" width="300"><polyline points
 #iterate over gps array to plot point
 
 for (( i=0; i<$gpsarrlength; i++ )); do
- echo ${gpsarr[$i]:9:12}','${gpsarr[$i]:21:12} >> $OF ;
+ echo ${gpsarr[$i]:9:12}','${gpsarr[$i]:21:12}' ' >> $OF ;
 done
 #finish graph and add label text
 echo '"style="fill:none;stroke:purple;stroke-width:1" />
-</svg></a><br></body></html>' >> $OF
+</svg></body></html>' >> $OF
